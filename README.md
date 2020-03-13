@@ -1,3 +1,5 @@
+сгенерировать jar 
+запустить с помощью команды java -jar boxing-1.jar C:\user\data\storage.xml
 # boxing
 Тестовое задание
 
