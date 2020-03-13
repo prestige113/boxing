@@ -26,10 +26,11 @@ public class BoxingApplication implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        readXMLFile.parse("");
         for (String arg : args.getSourceArgs()) {
             System.out.println(arg);
-            readXMLFile.parse(arg);
+            if (arg.contains(".xml")) {
+                readXMLFile.parse(arg);
+            }
         }
     }
 }

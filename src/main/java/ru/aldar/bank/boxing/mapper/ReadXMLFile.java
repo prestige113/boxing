@@ -36,7 +36,7 @@ public class ReadXMLFile {
 
     public void parse(String path) {
         try {
-            File fXmlFile = new File("C:\\Java\\boxing\\storage.xml");
+            File fXmlFile = new File(path);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(fXmlFile);
