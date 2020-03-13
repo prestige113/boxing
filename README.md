@@ -1,5 +1,6 @@
 # boxing
-тестовое задание
+Тестовое задание
+
 На вход в виде параметра командной строки java-приложению передаётся
 имя XML-файла, в котором задано взаимное положение предметов(Item) и ящиков(Box).
 Пример такого файла:
@@ -26,15 +27,27 @@
 - предметы могут быть не в ящике
 Требуется написать приложение, которое:
 1. заполняет при старте SQL-БД приведённой ниже структуры в соответствии с переданным XML-файлом
-CREATE TABLE BOX
-(ID INTEGER PRIMARY KEY,
-CONTAINED_IN INTEGER
-);
-CREATE TABLE ITEM
-(ID INTEGER PRIMARY KEY,
-CONTAINED_IN INTEGER REFERENCES BOX(ID),
-COLOR VARCHAR(100)
-);
+
+CREATE TABLE box
+(
+  id integer NOT NULL DEFAULT nextval('box_id_seq'::regclass),
+  contained_in integer,
+  CONSTRAINT box_pk PRIMARY KEY (id),
+  CONSTRAINT box_fk FOREIGN KEY (contained_in)
+      REFERENCES public.box (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE CASCADE
+)
+
+CREATE TABLE item
+(
+  id integer NOT NULL DEFAULT nextval('item_id_seq'::regclass),
+  contained_in integer,
+  color character varying(100),
+  CONSTRAINT item_pk PRIMARY KEY (id),
+  CONSTRAINT item_fk FOREIGN KEY (contained_in)
+      REFERENCES public.box (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE CASCADE
+)
 Примечание: выбор СУБД на усмотрение кандидата (как варианты embedded DBMS можно, например, взять: H2, sqlite и т.п.)
 В случае использования embedded/in-memory СУБД нужно залогировать в файл содержимое таблиц после загрузки.
 2. После загрузки файла приложение должно работать, как REST-сервис, который возвращает id предметов
