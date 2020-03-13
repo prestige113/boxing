@@ -5,29 +5,17 @@
 имя XML-файла, в котором задано взаимное положение предметов(Item) и ящиков(Box).
 Пример такого файла:
 <?xml version="1.0" encoding="UTF-8"?>
-
 <Storage>
- 
    <Item id="1"/>
-   
    <Item color="red" id="2"/>
-   
    <Box id="3">
- 
        <Item id="3" color="red" />
-       
        <Item id="4" color="black" />    
-       
-   </Box>
-   
-   <Box id="6"/>
-   
-   <Item id="5"/>
-   
  </Box>
- 
+   <Box id="6"/>
+   <Item id="5"/>
+ </Box>
  <Item id="6"/>
- 
 </Storage>
 
 - ящики могут быть пустыми или содержать предметы или другие ящики;
