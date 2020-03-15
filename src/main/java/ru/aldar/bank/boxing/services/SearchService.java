@@ -1,25 +1,31 @@
 package ru.aldar.bank.boxing.services;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
-
 import ru.aldar.bank.boxing.domain.Box;
 import ru.aldar.bank.boxing.repository.BoxRepository;
-import ru.aldar.bank.boxing.repository.ItemRepository;
+
+import javax.sql.DataSource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class SearchService {
 
     private
     BoxRepository boxRepository;
+
     @Autowired
-    public SearchService(BoxRepository boxRepository) {
+    public SearchService(BoxRepository boxRepository, DataSource dataSource) {
+        this.jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
         this.boxRepository = boxRepository;
     }
+
+    public NamedParameterJdbcTemplate jdbcTemplate;
+
 
     public List<String> search(Integer id, String color) {
         return getId(boxRepository.getOne(id), color);
@@ -33,6 +39,22 @@ public class SearchService {
             box.getBoxList().forEach(b -> list.addAll(getId(b, color)));
             return list;
         }
+    }
+
+    public List<String> searchJdbc(Integer id, String color) {
+        String sql = "select i.id from item i where (i.contained_in in (WITH RECURSIVE  r AS (\n" +
+                "\n" +
+                "select id, contained_in from box where contained_in = :id\n" +
+                "\n" +
+                "UNION all\n" +
+                "\n" +
+                "select box.id, box.contained_in from box join r on box.contained_in = r.id\n" +
+                ")\n" +
+                "SELECT r.id FROM r) or i.contained_in = :id)  and color = :color";
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("id", id);
+        params.put("color", color);
+        return jdbcTemplate.query(sql, params, new BeanPropertyRowMapper<String>());
     }
 
     /*

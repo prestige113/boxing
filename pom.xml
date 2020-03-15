@@ -51,7 +51,6 @@
 			</exclusions>
 		</dependency>
 	</dependencies>
-
 	<build>
 		<plugins>
 			<plugin>
@@ -68,5 +67,12 @@
 			</plugin>
 		</plugins>
 	</build>
-
+	<distributionManagement>
+		<repository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>prestige113</id>
+			<name>Prestige113 repository</name>
+			<url>file:///workspace/java/target/boxing</url>
+		</repository>
+	</distributionManagement>
 </project>
