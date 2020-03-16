@@ -54,7 +54,7 @@ public class SearchService {
         HashMap<String, Object> params = new HashMap<>();
         params.put("id", id);
         params.put("color", color);
-        return jdbcTemplate.query(sql, params, new BeanPropertyRowMapper<String>());
+        return jdbcTemplate.queryForList(sql, params, String.class);
     }
 
     /*

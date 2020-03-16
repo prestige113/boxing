@@ -24,6 +24,6 @@ public class Controller {
 
     @GetMapping(value = "get")
     public List<String> getItemsId(@RequestParam(name = "box") Integer box, @RequestParam(name = "color") String color) {
-        return searchService.search(box, color);
+        return searchService.searchJdbc(box, color);
     }
 }
